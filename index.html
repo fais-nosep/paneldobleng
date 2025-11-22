@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOBLENG OFFICIAL 1M♡ㅤ9k⎙ㅤ 3M⌲
+</title>
+<style>
+:root{
+  --bg:#0d111b;
+  --card:#121827;
+  --accent:#4f46e5;
+  --muted:#a1a8c6;
+  --text:#e6eef6;
+}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);} 
+header{padding:16px;text-align:center;font-size:20px;font-weight:bold;background:var(--card);border-bottom:1px solid #222;}
+.container{max-width:900px;margin:20px auto;padding:10px;}
+.card{background:var(--card);padding:15px;border-radius:10px;margin-bottom:15px;border:1px solid rgba(255,255,255,0.05);} 
+.input, select{width:100%;padding:10px;margin:5px 0;border-radius:8px;background:#0e1920;border:1px solid #222;color:var(--text);} 
+.btn{padding:10px;border:none;width:100%;border-radius:8px;background:var(--accent);color:white;margin-top:8px;cursor:pointer;} 
+.contact-icon{display:inline-block;width:30px;height:30px;background:#25D366;border-radius:50%;text-align:center;line-height:30px;color:white;font-size:18px;text-decoration:none;}
+</style>
+</head>
+<body><header>DOBLENG OFFICIAL</header>
+<div class="container"><!-- Kontak Admin --><div class="card">
+<h3>KLIK↴BANTUAN ADMIN  
+          1M♡ㅤ9k⎙ㅤ 3M⌲
+</h3>
+<a href="https://wa.me/6283183512560" target="_blank" class="contact-icon">&#128241;</a>
+</div><!-- Order Panel --><div class="card">
+<h3>Pesan Panel</h3>
+<label>Username</label><input id="username" class="input" placeholder="Masukkan username">
+<label>Email</label><input id="email" class="input" placeholder="Masukkan email">
+<label>Paket</label>
+<select id="paket" class="input">
+  <option value="">--Pilih Paket--</option>
+  <option value="PANEL 1GB RAM 1GB|2000">1GB EXPRESS — 9k</option>
+  <option value="PANEL 2GB RAM 2GB|5000">2GB EXPRESS — 10k</option>
+  <option value="PANEL 3GB RAM 3GB|7000">3GB EXPRESS — 11k</option>
+  <option value="UNLIMITED|16000">UNLIMITED — 16k</option>
+</select>
+<label>Upload Bukti Transfer</label>
+<input type="file" id="bukti" class="input" accept="image/*">
+<button class="btn" onclick="uploadOrder()">Submit Order</button>
+</div><!-- Claim Garansi --><div class="card">
+<h3>Claim Garansi</h3>
+<label>ID TRX</label><input id="idClaim" class="input" placeholder="Masukkan ID TRX">
+<label>Alasan</label><input class="input" placeholder="Deskripsikan masalah">
+<button class="btn" onclick="alert('Klaim dikirim (demo)')">Kirim Klaim</button>
+</div><!-- Cek Pesanan --><div class="card">
+<h3>Cek Pesanan</h3>
+<input id="cekTrx" class="input" placeholder="Masukkan ID TRX">
+<button class="btn" onclick="cekStatus()">Cek Status</button>
+<div id="cekResult" style="margin-top:10px;"></div>
+</div><!-- Riwayat Publik --><div class="card" id="riwayatCard">
+<h3>Riwayat Transaksi Publik</h3>
+<div id="riwayat"></div>
+</div><script>
+// =====================
+// TRANSAKSI
+function loadTrx(){try{return JSON.parse(localStorage.getItem('trx')||'[]')}catch(e){return[]}}
+function saveTrx(arr){localStorage.setItem('trx',JSON.stringify(arr))}
+function renderFeed(){
+  const arr=loadTrx();
+  const container=document.getElementById('riwayat');
+  if(arr.length===0){container.innerHTML='<p>Belum ada transaksi.</p>';return;}
+  let html='';
+  arr.forEach(t=>{
+    html+=`<div style="margin-bottom:8px;padding:8px;border:1px solid #222;border-radius:6px;">
+    <b>ID:</b> ${t.id}<br>
+    <b>User:</b> ${t.username}<br>
+    <b>Email:</b> ${t.email}<br>
+    <b>Paket:</b> ${t.paket}<br>
+    <b>Status:</b> ${t.status}<br>
+    ${t.image?`<img src="${t.image}" style="width:100px;margin-top:5px;border-radius:6px;">`:''}
+    </div>`;
+  });
+  container.innerHTML=html;
+}
+
+function uploadOrder(){
+  const username=document.getElementById('username').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const paket=document.getElementById('paket').value;
+  const file=document.getElementById('bukti').files[0];
+  if(!username||!email||!paket){return alert('Lengkapi data!')}
+  if(!file){return alert('Pilih file bukti!')}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const trx={id:'TRX'+Date.now(),username,email,paket:paket.split('|')[0],amount:paket.split('|')[1],image:e.target.result,status:'Menunggu Verifikasi'};
+    const arr=loadTrx(); arr.unshift(trx); saveTrx(arr);
+    renderFeed(); alert('Order berhasil, terlihat di riwayat publik.');
+  }
+  reader.readAsDataURL(file);
+}
+
+// =====================
+// CEK STATUS
+function cekStatus(){
+  const id=document.getElementById('cekTrx').value.trim();
+  const arr=loadTrx();
+  const found=arr.find(x=>x.id===id);
+  document.getElementById('cekResult').innerHTML=found?`ID: ${found.id}<br>Status: ${found.status}`:'ID tidak ditemukan';
+}
+
+renderFeed();
+</script></body>
+</html>
